@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class User {
     private String cn_user_id;
     private String cn_user_name;
-    private String cu_user_password;
+    private String cn_user_password;
     private String cn_user_token;
     private String cn_user_nick;
 }

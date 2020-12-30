@@ -11,4 +11,5 @@ import java.util.List;
 public interface UserDao {
     List<User> findAll();
     User findByName(String name);
+    void insert(User user);
 }

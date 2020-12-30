@@ -11,6 +11,6 @@ public class MyTest {
     public void test01(){
         ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext("Spring.xml");
         UserDao userDao = ac.getBean("userDao", UserDao.class);
-        System.out.println(userDao.findByName("zz1"));
+        System.out.println(userDao.findByName("zs"));
     }
 }

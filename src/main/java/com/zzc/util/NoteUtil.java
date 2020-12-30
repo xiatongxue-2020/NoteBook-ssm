@@ -29,7 +29,6 @@ public class NoteUtil {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
         byte[] digest = md5.digest(pwd.getBytes());
         String s = Base64.byteArrayToAltBase64(digest);
-
         return s;
     }
 
