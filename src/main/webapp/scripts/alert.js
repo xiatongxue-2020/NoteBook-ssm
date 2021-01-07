@@ -8,11 +8,11 @@ function alertMoveNoteWindow(){
 		//循环book列表数据
 		for(var i=0;i<books.length;i++){
 			var $li = $(books[i]);//获取li元素并转为jQuery对象
-			var bookId = $li.data("bookId");//获取笔记本id
+			var bookid = $li.data("bookid");//获取笔记本id
 			var bookName = $li.text().trim();//获取笔记本名
 			//创建一个option元素
 			var sopt = '';
-			sopt+='<option value="'+bookId+'">';
+			sopt+='<option value="'+bookid+'">';
 			sopt+= bookName;
 			sopt+='</option>';
 			//添加到select中
@@ -24,6 +24,12 @@ function alertMoveNoteWindow(){
 function alertDeleteNoteWindow(){
 	$("#can").load(
 		"alert/alert_delete_note.html");
+	$(".opacity_bg").show();
+};
+//弹出删除笔记确认对话框
+function alertDelete_rellbackNote(){
+	$("#can").load(
+		"alert/alert_delete_rollback.html");
 	$(".opacity_bg").show();
 };
 //弹出创建笔记对话框
@@ -44,6 +50,27 @@ function alertRenameBookWindow(){
 	$("#can").load(
 		"alert/alert_rename.html");
 	$(".opacity_bg").show();
+};
+//弹出恢复笔记对话框
+function alertReplayNoteWindow(){
+	$(".opacity_bg").show();
+	$("#can").load("alert/alert_replay.html",function(){
+		//为alert_move.html中<select>加载数据
+		var books = $("#book_ul li");//获取book列表
+		//循环book列表数据
+		for(var i=0;i<books.length;i++){
+			var $li = $(books[i]);//获取li元素并转为jQuery对象
+			var bookid = $li.data("bookid");//获取笔记本id
+			var bookName = $li.text().trim();//获取笔记本名
+			//创建一个option元素
+			var sopt = '';
+			sopt+='<option value="'+bookid+'">';
+			sopt+= bookName;
+			sopt+='</option>';
+			//添加到select中
+			$("#replaySelect").append(sopt);
+		}
+	});
 };
 
 //弹出创建笔记本对话框

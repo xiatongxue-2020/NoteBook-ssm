@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zzc.dao.NoteBookDao">
+    <insert id="addBook">
+        insert  into cn_notebook values (#{cn_notebook_id},#{cn_user_id},#{cn_notebook_type_id},#{cn_notebook_name},
+        #{cn_notebook_desc},#{cn_notebook_createtime})
+    </insert>
+    <update id="updateName">
+        update cn_notebook set cn_notebook_name=#{param2} where cn_notebook_id=#{param1}
+    </update>
     <select id="findById" resultType="com.zzc.entity.NoteBook">
         select * from cn_notebook where cn_user_id=#{cn_user_id}
     </select>

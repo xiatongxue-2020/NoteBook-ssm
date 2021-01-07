@@ -14,4 +14,8 @@ public interface NoteBookDao {
      * @return
      */
     List<NoteBook> findById(String id);
+
+    int addBook(NoteBook noteBook);
+
+    int updateName(String bookid, String bookname);
 }

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
     <head>
         <meta charset="utf-8">
         <title>我的笔记</title>
@@ -26,19 +26,19 @@
                     <img class="brand-logo" src="images/dummy/8986f28e.stilearn-logo.png" alt="Stilearn Admin Sample Logo">
                 </a>
             </div>
-            <div class="header-profile">
-                <div class="profile-nav">
-                    <span class="profile-username"></span>
-                    <a  class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="fa fa-angle-down"></span>
-                    </a>
-                    <ul class="dropdown-menu animated flipInX pull-right" role="menu">
-                        <li><a href="Change_password.html"><i class="fa fa-user"></i> 修改密码</a></li>
-                        <li class="divider"></li>
-                        <li><a id="logout" href="#" ><i class="fa fa-sign-out"></i> 退出登录</a></li>
-                    </ul>
-                </div>
-            </div>
+			<div class="header-profile">
+				<div class="profile-nav">
+					<span class="profile-username">奔XX</span>
+					<a  class="dropdown-toggle" data-toggle="dropdown">
+						<span class="fa fa-angle-down"></span>
+					</a>
+					<ul class="dropdown-menu animated flipInX pull-right" role="menu">
+						<li><a href="Change_password.html"><i class="fa fa-user"></i> 修改密码</a></li>
+						<li class="divider"></li>
+						<li><a href="log_in.html"><i class="fa fa-sign-out"></i> 退出登录</a></li>
+					</ul>
+				</div>
+			</div>
             <form class="form-inline" onsubmit="return false;">
                 <button type="button" class="btn btn-default btn-expand-search"><i class="fa fa-search"></i></button>
                 <div class="toggle-search">
@@ -126,7 +126,7 @@
 						<div class="chat-contact">
 							<div class="contact-body">
 								<ul class="contacts-list">
-									<li class="disable"><a ><i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i> 虚假回收站笔记<button type="button" class="btn btn-default btn-xs btn_position btn_delete"><i class="fa fa-times"></i></button><button type="button" class="btn btn-default btn-xs btn_position_2 btn_replay"><i class="fa fa-reply"></i></button></a></li>
+
 								</ul>
 							</div>
 						</div>
@@ -134,6 +134,7 @@
 				</aside>
 			</div>
 			<!-- 回收站笔记 -->
+
 			<!-- 搜索笔记列表 -->
 			<div class="col-xs-3" style='padding:0;display:none;' id='pc_part_6'>
 				<div class="pc_top_second">
@@ -279,6 +280,7 @@
 				var style=dom.currentStyle||window.getComputedStyle(dom, null);
 				get_dom('myEditor').style.width=style.width;
 			}
+
 			set_height();
 			//改变窗口大小时调整页面尺寸
 			window.onresize=function(){
@@ -288,6 +290,10 @@
 				$('#myEditor').width(width-20);
 			};
 		</script>
+		<script type="text/javascript" src="scripts/jquery.min.js"></script>
+		<!-- Bootstrap框架JS -->
+		<script type="text/javascript" src="scripts/bootstrap.min.js"></script>
+		<script type="text/javascript" src="scripts/theme-setup.js"></script>
 		
         <script type="text/javascript" src="scripts/jquery.min.js"></script>
 		<script type="text/javascript"src="scripts/basevalue.js"></script>
@@ -295,11 +301,113 @@
 		<script type="text/javascript" src="scripts/book.js"></script>
 		<script type="text/javascript" src="scripts/note.js"></script>
 		<script type="text/javascript" src="scripts/alert.js"></script>
+		<script type="text/javascript" src="utf8-net/ueditor.config.js"></script>
+		<script type="text/javascript" src="utf8-net/ueditor.all.js"></script>
+		<script type="text/javascript" src="utf8-net/lang/zh-cn/zh-cn.js"></script>
+		<script type="text/javascript">
+
+			//实例化编辑器
+			//建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+			// var ue = UE.getEditor('myEditor');
+		</script>
 		<script>
+			var page;
+			var keyword;
 			$(function () {
 				loadUserBook();
+				/**
+				 * 根据笔记本加载笔记
+				 */
+				$("#book_ul").on("click","li",loadNotes);
+				$("#note_ul").on("click","li",loadNoteInfo);
+				//绑定保存笔记按钮
+				$("#save_note").on("click",savenote);
+				//关闭对话框
+				$("#can").on("click",".cancle,.close",closeAlertWindow);
+				//跳出创建笔记本窗口
+				$("#add_notebook").click(alertAddBookWindow);
+				//跳出创建笔记窗口
+				$("#add_note").click(alertAddNoteWindow);
+				//绑定创建笔记本按钮(动态绑定)
+				$("#can").on("click","#sure_addbook",addbook);
+				//绑定创建笔记按钮（动态绑定）
+				$("#can").on("click","#sure_addnote",addnote);
+				//重命名
+				$("#book_ul").on("dblclick","li",alertRenameBookWindow);
+				//绑定重命名的确定按钮
+				$("#can").on("click","#rename",renameBook)
+				//弹出操作菜单
+				$("#note_ul").on("click",".btn_slide_down",showMenu);
+				//点击页面消失操作菜单
+				$("body,html").click(hideMenu);
+				//删除笔记弹窗的弹出
+				$("#note_ul").on("click",".btn_delete",alertDeleteNoteWindow);
+				//绑定删除弹窗的删除按钮
+				$("#can").on("click","#sure_deletenote",deleteNote);
+				//点击回收站显示回收的日记
+				$("#rollback_button").click(showDnote);
+				//点击回收站日记列表显示详细信息
+				$("#four_side_right").on("click","li",showNoteInfo);
+				//移动笔记弹窗的弹出
+				$("#note_ul").on("click",".btn_move",alertMoveNoteWindow);
+				//绑定移动笔记的确定按钮
+				$("#can").on("click","#sure_movenote",moveNote);
+				//分享笔记
+				$("#note_ul").on("click",".btn_share",shareNote);
+				//打开恢复笔记弹窗
+				$("#four_side_right").on("click",".btn_replay",alertReplayNoteWindow);
+				//绑定恢复笔记的恢复按钮
+				$("#can").on("click","#replay",replayNote);
+				//打开彻底删除笔记弹窗
+				$("#four_side_right").on("click",".btn_delete",alertDelete_rellbackNote);
+				$("#can").on("click","#delete",deleteRollbackNote);
+				//搜索分享笔记
+				$("#search_note").keydown(function (event) {
+					//获取事件源对应的key编号
+					var code = event.keyCode;
+					if (code == 13){
+						$("#sixth_side_right ul").empty();
+						//1.获取请求参数
+						 keyword = $("#search_note").val().trim();
+						 page  =1;
+						 searchSharePage(keyword,page);
+					}
+				})
+				//绑定更多按钮page+1
+				$("#more_note").click(function () {
+					page = page+1;
+					searchSharePage(keyword,page);
+				})
+				//点击分享笔记的li查看详情
+				$("#sixth_side_right").on("click","li",showShareNote);
+				//点击显示收藏笔记本信息
+				$("#like_button").click(showLike);
+				//点击显示参加活动日记信息
+				$("#action_button").click(showAction)
 			});
 		</script>
+        <!-- Bootstrap框架JS -->
+<!--        <script src="scripts/bootstrap.min.js"></script>-->
+<!--        <script src="scripts/js-prototype.js"></script>-->
+<!--        <script src="scripts/theme-setup.js"></script>-->
+        <!-- Google-Code代码高亮JS -->
+        <script class="re-execute" src="scripts/run_prettify.js"></script>
+        <!-- Ueditor编辑器JS -->
+        <script type="text/javascript" charset="utf-8" src="scripts/ue/umeditor.config.js"></script>
+        <script type="text/javascript" charset="utf-8" src="scripts/ue/umeditor.min.js"></script>
+        <script type="text/javascript" src="scripts/ue/lang/zh-cn.js"></script>
+        <script type="text/javascript">
+            //重写JS原生alert函数
+
+            window.alert=function(e){
+                $('#can').load('./alert/alert_error.html',function(){
+                    $('#error_info').text(' '+e);
+                    $('.opacity_bg').show();
+                });
+            }
+            //实例化Ueditor编辑器
+            var um = UM.getEditor('myEditor');
+        </script>
 		
 	</body>		
 </html>

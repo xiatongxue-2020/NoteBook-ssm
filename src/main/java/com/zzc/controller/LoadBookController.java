@@ -20,4 +20,15 @@ public class LoadBookController {
         JsonInfo jsonInfo = noteBookService.findById(userId);
         return jsonInfo;
     }
+    @RequestMapping("/book/add.do")
+    public JsonInfo addBook(String bookName,String userid){
+       JsonInfo jsonInfo =  noteBookService.addBook(bookName,userid);
+        return jsonInfo;
+    }
+    @RequestMapping("/book/rename.do")
+    public JsonInfo renameBook(String bookid,String bookname){
+        JsonInfo jsonInfo =  noteBookService.rename(bookid,bookname);
+        return jsonInfo;
+    }
+
 }

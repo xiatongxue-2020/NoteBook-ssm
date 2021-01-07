@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzc.dao.ShareDao">
+    <insert id="insert">
+    insert into cn_share values (#{cn_share_id},#{cn_share_title},#{cn_share_body},#{cn_note_id})
+    </insert>
+    <select id="findLikeTitle" resultType="com.zzc.entity.Share">
+        SELECT * FROM cn_share WHERE cn_share_title LIKE #{param1} LIMIT #{param2} , 5
+    </select>
+    <select id="findById" resultType="com.zzc.entity.Share">
+        select * from cn_share where  cn_share_id=#{shareid}
+    </select>
+</mapper>

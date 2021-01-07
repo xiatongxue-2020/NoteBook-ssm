@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
     @Resource
     private UserDao userDao;
 

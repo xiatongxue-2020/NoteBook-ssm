@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzc.dao.NoteDao">
+    <insert id="addNote">
+        insert into cn_note(cn_user_id,cn_note_status_id,cn_note_title,cn_note_id,cn_notebook_id,cn_note_body)
+        values (#{cn_user_id},#{cn_note_status_id},#{cn_note_title},#{cn_note_id},#{cn_notebook_id},#{cn_note_body})
+    </insert>
+    <delete id="deleteNote">
+        delete from cn_note where cn_note_id=#{noteid}
+    </delete>
+
+    <select id="findById" resultType="com.zzc.entity.Note">
+        select * from cn_note where cn_notebook_id = #{cn_notebook_id} and cn_note_status_id='1'
+    </select>
+    <select id="findByNoteId" resultType="com.zzc.entity.Note">
+        select * from cn_note where cn_note_id=#{cn_note_id}
+    </select>
+    <select id="findByUserId" resultType="com.zzc.entity.Note">
+        select * from cn_note where cn_user_id=#{userid} and cn_note_status_id = '2'
+    </select>
+
+
+    <update id="dynamicUpdate">
+        update cn_note
+        <set>
+            <if test="cn_notebook_id != null">
+                cn_notebook_id = #{cn_notebook_id},
+            </if>
+            <if test="cn_user_id != null">
+                cn_user_id = #{cn_user_id},
+            </if>
+            <if test="cn_note_status_id != null">
+                cn_note_status_id = #{cn_note_status_id},
+            </if>
+            <if test="cn_note_type_id != null">
+                cn_note_type_id = #{cn_note_type_id},
+            </if>
+            <if test="cn_note_title != null">
+                cn_note_title = #{cn_note_title},
+            </if>
+            <if test="cn_note_body != null">
+                cn_note_body = #{cn_note_body},
+            </if>
+            <if test="cn_note_create_time != null">
+                cn_note_create_time = #{cn_note_create_time},
+            </if>
+            <if test="cn_note_last_modify_time != null">
+                cn_note_last_modify_time = #{cn_note_last_modify_time},
+            </if>
+        </set>
+        where cn_note_id=#{cn_note_id}
+    </update>
+</mapper>
